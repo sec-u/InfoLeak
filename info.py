@@ -46,9 +46,11 @@ class StickyMaster(controller.Master):
     def orderLeak(self,flow):
         return 1
     def InfoLeak(self,flow):
+        re_info = re.compile('^0\d{2,3}\d{7,8}$|^1[358]\d{9}$|^147\d{8}',re.IGNORECASE | re.DOTALL | re.MULTILINE)
         #re_info = re.compile('0\d{2,3}\d{7,8}|1[358]\d{9}|147\d{8}',re.IGNORECASE | re.DOTALL | re.MULTILINE)
         #re_info = re.compile('1[358]\d{9}|147\d{8}',re.IGNORECASE | re.DOTALL | re.MULTILINE)
-        re_info = re.compile('1[3578]\d{9}',re.IGNORECASE | re.DOTALL | re.MULTILINE)
+        #re_info = re.compile('1[3578]\d{9}',re.IGNORECASE | re.DOTALL | re.MULTILINE)
+        #re_info = re.compile('15568816981',re.IGNORECASE | re.DOTALL | re.MULTILINE)
         if flow.request.pretty_host.endswith("ctrip.com"):
             result  = re_info.findall(flow.response.content)
             if len(result) == 0:

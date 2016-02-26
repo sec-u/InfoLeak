@@ -43,9 +43,12 @@ class StickyMaster(controller.Master):
         url = "http//:%s%s" % (flow.request.host, flow.request.path)                                                                                                               
         t = AutoSqli('http://127.0.0.1:8775',url)                                                                                                                                  
         t.run()                                         
-    def orderLeak(self,flow):
+    def OrderInfoLeak(self,flow):
+        #订单正则，匹配订单订单相关url，人工review漏洞
+        re_order_info = re.compile('order[id]|detail')
         return 1
-    def InfoLeak(self,flow):
+    #手机号码泄漏检测
+    def MoblieInfoLeak(self,flow):
         re_info = re.compile('^0\d{2,3}\d{7,8}$|^1[358]\d{9}$|^147\d{8}',re.IGNORECASE | re.DOTALL | re.MULTILINE)
         #re_info = re.compile('0\d{2,3}\d{7,8}|1[358]\d{9}|147\d{8}',re.IGNORECASE | re.DOTALL | re.MULTILINE)
         #re_info = re.compile('1[358]\d{9}|147\d{8}',re.IGNORECASE | re.DOTALL | re.MULTILINE)
@@ -82,7 +85,7 @@ class StickyMaster(controller.Master):
     def handle_response(self, flow):
         with decoded(flow.response):  # automatically decode gzipped responses.
             try:
-	        flag = self.InfoLeak(flow)
+	        flag = self.MobileInfoLeak(flow)
                 if flag == 1:
                     print("handle request: %s%s" % (flow.request.host, flow.request.path))
             except Exception,ex:  # Unknown image types etc.
